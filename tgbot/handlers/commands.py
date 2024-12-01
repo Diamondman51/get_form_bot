@@ -6,7 +6,7 @@ from sqlalchemy import exists, select, func
 from sqlalchemy.orm import selectinload
 from keyboards.keyboards import *
 from database.models import User, UserForms, session
-from states.states import GetDate, GetForm, GetPhone
+from states.states import GetDate, GetForm, GetLoc, GetPhone
 from aiogram.enums import ParseMode
 import dotenv
 import os
@@ -100,16 +100,18 @@ async def get_all_forms(message: types.Message, bot: Bot) -> None:
         except:
             pass
     else:
-        await message.answer(f"Извините, это команда для администратора. Если хотите такой же бот, обращайтесь к этому аккаунту: <a>@Diamondman51</a>")
+        # await message.answer(f"Извините, это команда для администратора. Если хотите такой же бот, обращайтесь к этому аккаунту: <a>@Diamondman51</a>")
+        await message.answer(f"Извините, это команда для администратора.")
 
 
 async def get_forms_by_date(message: types.Message, state: FSMContext)-> None:
     admin = int(os.getenv('admin_id'))
     if message.from_user.id == admin:
-        await message.answer("Введите дату как на примере:\n<b>2024-11-30</b>\n<b>2024-05-15</b>")
+        await message.answer("Введите дату как на примере:\n<b>2024-11-30</b>")
         await state.set_state(GetDate.date)
     else:
-        await message.answer(f"Извините, это команда для администратора. Если хотите такой же бот, обращайтесь к этому аккаунту: <a>@Diamondman51</a>")
+        # await message.answer(f"Извините, это команда для администратора. Если хотите такой же бот, обращайтесь к этому аккаунту: <a>@Diamondman51</a>")
+        await message.answer(f"Извините, это команда для администратора.")
 
 
 async def get_date(message: types.Message, state: FSMContext, bot: Bot) -> None:
@@ -118,6 +120,16 @@ async def get_date(message: types.Message, state: FSMContext, bot: Bot) -> None:
     format_of_date = '%Y-%m-%d'
     formatted_date = datetime.strptime(date, format_of_date)
     await sort_forms_by_date(bot, formatted_date)
+
+
+async def get_user_location(message: types.Message, state: FSMContext) -> None:
+    await message.answer('Введите долготу и широту: ')
+    await state.set_state(GetLoc.loc)
+
+
+async def send_loc(message: types.Message, state: FSMContext) -> None:
+    longitude, latitude = message.text.split(" ")
+    await message.reply_location(latitude=latitude, longitude=longitude, reply_markup=admin_keyboards)
 
 
 async def sort_forms_by_date(bot: Bot, formatted_date: datetime) -> None: 

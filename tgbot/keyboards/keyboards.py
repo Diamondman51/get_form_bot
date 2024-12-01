@@ -17,5 +17,5 @@ send_loc = ReplyKeyboardMarkup(keyboard=[
 ], resize_keyboard=True)
 
 admin_keyboards = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Получить все формы'), KeyboardButton(text="Получить формы по дате")]
+    [KeyboardButton(text='Получить все формы'), KeyboardButton(text="Получить формы по дате"), KeyboardButton(text='Получить локацию')]
 ], resize_keyboard=True)

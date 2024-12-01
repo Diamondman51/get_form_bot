@@ -14,3 +14,7 @@ class GetForm(StatesGroup):
 
 class GetDate(StatesGroup):
     date = State()
+
+
+class GetLoc(StatesGroup):
+    loc = State()
