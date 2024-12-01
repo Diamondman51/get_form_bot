@@ -43,9 +43,10 @@ async def aiogram_on_shutdown_polling(dispatcher: Dispatcher, bot: Bot) -> None:
 
 async def main():
     setup_logging()
-    session = AiohttpSession(
-        json_loads=orjson.loads,
-    )
+    session = AiohttpSession(proxy='http://proxy.server:3128/')
+    # session = AiohttpSession(
+    #     json_loads=orjson.loads,
+    # )
 
     bot = Bot(
         token=config.BOT_TOKEN,
